@@ -6,6 +6,12 @@ import 'admin-lte/plugins/jquery/jquery.min.js';
 // <!-- Bootstrap 4 -->
 import 'admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js';
 
+// <!-- SweetAlert2 -->
+import 'admin-lte/plugins/sweetalert2/sweetalert2.min.js';
+
+// <!-- Toastr -->
+import 'admin-lte/plugins/toastr/toastr.min.js';
+
 // <!-- DataTables & Plugins -->
 import 'admin-lte/plugins/datatables/jquery.dataTables.min.js';
 import 'admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js';
