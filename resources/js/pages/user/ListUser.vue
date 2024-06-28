@@ -1,15 +1,20 @@
 <script setup>
 import axios from 'axios';
 import { ref, onMounted, reactive } from 'vue';
+import { Form, Field } from 'vee-validate';
+import * as yup from 'yup';
 
+    // declare users empty array as reactive in vue template
     const users = ref([]);
 
+    // declare form file property set it to blank
     const form = reactive({
         name: '',
         email: '',
         password: '',
     });
 
+    // get users data from backend
     const getUsers = () => {
         axios.get('/api/users')
         .then((response) => {
@@ -18,17 +23,29 @@ import { ref, onMounted, reactive } from 'vue';
         });
     }
 
-    const createUser = () => {
-        axios.post('/api/users', form)
+    // yup use for validate form and filed at frontend
+    const schema = yup.object({
+        name: yup.string().required(),
+        email: yup.string().required(),
+        password: yup.string().required().min(8),
+    });
+
+    // create user and display into the table top row then reset form
+    const createUser = (values, { resetForm }) => {
+        // console.log(values);
+        axios.post('/api/users', values)
         .then((response) => {
             users.value.unshift(response.data);
-            form.name = '';
-            form.email = '';
-            form.password = '';
+            // reset form fild property
+            // form.name = '';
+            // form.email = '';
+            // form.password = '';
             $('#createUserModal').modal('hide');
-        });
+            resetForm();
+        })
     }
 
+    // sync data frontend and backend in vue template
     onMounted(() => {
         getUsers();
     });
@@ -58,12 +75,13 @@ import { ref, onMounted, reactive } from 'vue';
     <div class="content">
         <div class="container-fluid">
             <div class="container-fluid">
-                <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#createUserModal">
-                    Add New User
-                </button>
+
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">DataTable with minimal features & hover style</h3>
+                        <!-- <h3 class="card-title">DataTable with minimal features & hover style</h3> -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createUserModal">
+                            Add New User
+                        </button>
                     </div>
                     <div class="card-body">
                         <table id="example2" class="table table-bordered table-hover">
@@ -107,39 +125,40 @@ import { ref, onMounted, reactive } from 'vue';
                 </div>
                 <!-- <Form ref="form" @submit="handleSubmit" :validation-schema="editing ? editUserSchema : createUserSchema"
                     v-slot="{ errors }" :initial-values="formValues"> -->
-                <form autocomplete="off">
+                <Form @submit="createUser" :validation-schema="schema" v-slot="{ errors }">
                     <div class="modal-body">
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <!-- <Field name="name" type="text" class="form-control" :class="{ 'is-invalid': errors.name }"
+                            <Field name="name" type="text" class="form-control" :class="{ 'is-invalid': errors.name }"
                                 id="name" aria-describedby="nameHelp" placeholder="Enter full name" />
-                            <span class="invalid-feedback">{{ errors.name }}</span> -->
-                            <input v-model="form.name" name="name" type="text" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter full name" />
+                            <span class="invalid-feedback">{{ errors.name }}</span>
+                            <!-- <input v-model="form.name" name="name" type="text" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter full name" /> -->
                         </div>
 
                         <div class="form-group">
                             <label for="email">Email</label>
-                            <!-- <Field name="email" type="email" class="form-control "
+                            <Field name="email" type="email" class="form-control "
                                 :class="{ 'is-invalid': errors.email }" id="email" aria-describedby="nameHelp"
                                 placeholder="Enter full name" />
-                            <span class="invalid-feedback">{{ errors.email }}</span> -->
-                            <input v-model="form.email" name="email" type="email" class="form-control " id="email" aria-describedby="nameHelp" placeholder="Enter full name" />
+                            <span class="invalid-feedback">{{ errors.email }}</span>
+                            <!-- <input v-model="form.email" name="email" type="email" class="form-control " id="email" aria-describedby="nameHelp" placeholder="Enter full name" /> -->
                         </div>
 
                         <div class="form-group">
                             <label for="email">Password</label>
-                            <!-- <Field name="password" type="password" class="form-control "
+                            <Field name="password" type="password" class="form-control "
                                 :class="{ 'is-invalid': errors.password }" id="password" aria-describedby="nameHelp"
                                 placeholder="Enter password" />
-                            <span class="invalid-feedback">{{ errors.password }}</span> -->
-                            <input v-model="form.password" name="password" type="password" class="form-control " id="password" aria-describedby="nameHelp" placeholder="Enter password" />
+                            <span class="invalid-feedback">{{ errors.password }}</span>
+                            <!-- <input v-model="form.password" name="password" type="password" class="form-control " id="password" aria-describedby="nameHelp" placeholder="Enter password" /> -->
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button @click="createUser" type="submit" class="btn btn-primary">Save</button>
+                        <!-- <button @click="createUser" type="submit" class="btn btn-primary">Save</button> -->
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </div>
-                </form>
+                </Form>
             </div>
         </div>
     </div>

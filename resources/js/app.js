@@ -1,7 +1,7 @@
 import './bootstrap';
 
 // <!-- jQuery -->
-import 'admin-lte/plugins/jquery/jquery.min.js';
+// import 'admin-lte/plugins/jquery/jquery.min.js';
 
 // <!-- Bootstrap 4 -->
 import 'admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js';
@@ -25,6 +25,10 @@ import 'admin-lte/plugins/pdfmake/vfs_fonts.js';
 import 'admin-lte/plugins/datatables-buttons/js/buttons.html5.min.js';
 import 'admin-lte/plugins/datatables-buttons/js/buttons.print.min.js';
 import 'admin-lte/plugins/datatables-buttons/js/buttons.colVis.min.js';
+
+// <!-- jquery-validation -->
+import 'admin-lte/plugins/jquery-validation/jquery.validate.min.js';
+import 'admin-lte/plugins/jquery-validation/additional-methods.min.js';
 
 // <!-- AdminLTE App -->
 import 'admin-lte/dist/js/adminlte.min.js';
